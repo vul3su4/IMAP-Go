@@ -6,6 +6,7 @@ import (
 	"io"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
@@ -115,6 +116,15 @@ func (n *ImapOpts) getCitylineLoginCode() (string, error) {
 
 			if date, err := header.Date(); err == nil {
 				maildate = date.Unix()
+			}
+
+			// Check time range if specified
+			if n.TimeRangeMinutes > 0 {
+				currentTime := time.Now().Unix()
+				timeRangeSeconds := int64(n.TimeRangeMinutes) * 60
+				if maildate < currentTime-timeRangeSeconds {
+					continue // Skip emails outside the time range
+				}
 			}
 
 			if subject, err := header.Subject(); err == nil {
