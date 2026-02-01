@@ -1,6 +1,7 @@
 package imapgo
 
 import(
+	"fmt"
 	"time"
 
 )
@@ -24,6 +25,17 @@ func (n *ImapOpts) FetchEmail()(string, error){
 				break
 			}
 			time.Sleep(5* time.Second)
+		}
+	case Target:
+		for i := 1; i < n.MaxChecks; i++ {
+			info, fetchErr := n.GetTargetOrderInfo()
+			if fetchErr == nil && info != nil {
+				message = fmt.Sprintf("OrderNumber:%s|OrderTotal:%s|DeliversTo:%s|ProductName:%s|ProductImage:%s|ReceivedAt:%d",
+					info.OrderNumber, info.OrderTotal, info.DeliversTo, info.ProductName, info.ProductImage, info.ReceivedAt)
+				break
+			}
+			err = fetchErr
+			time.Sleep(5 * time.Second)
 		}
 	}
 	return message, err

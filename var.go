@@ -13,5 +13,9 @@ var (
 
 const(
 	Cityline = "cityline"
-	Nike = "nike"
+	Nike     = "nike"
+	Target   = "target"
+	Amazon   = "amazon"
+	BestBuy  = "bestbuy"
+	Walmart  = "walmart"
 )
