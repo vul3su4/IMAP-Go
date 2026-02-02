@@ -50,6 +50,9 @@ func (n *ImapOpts) GetTargetOrderList() ([]*TargetOrderInfo, error) {
 		return nil, fmt.Errorf("login and password are incorrect: %s:%s - %s", n.CatchallEmail, n.CatchallPassword, err.Error())
 	}
 
+	// Only scan INBOX and [Gmail]/All Mail (order emails land there); avoid 20+ folders for speed
+	boxes = statusCheckMailboxes(boxes)
+
 	var list []*TargetOrderInfo
 	fetchCount := n.TargetFetchCount
 	if fetchCount <= 0 {
@@ -484,18 +487,19 @@ func isTargetCancellationEmail(html string) bool {
 		(strings.Contains(lower, "sorry") && strings.Contains(lower, "cancel"))
 }
 
-// statusCheckMailboxes search for order status only in INBOX and [Gmail]/All Mail, avoid scanning all folders to avoid performance issues
+// statusCheckMailboxes returns only [Gmail]/All Mail (contains everything) for speed; else INBOX for non-Gmail; else all folders.
 func statusCheckMailboxes(boxes []string) []string {
-	var out []string
 	for _, b := range boxes {
-		if b == "INBOX" || b == "[Gmail]/All Mail" {
-			out = append(out, b)
+		if b == "[Gmail]/All Mail" {
+			return []string{b} // one folder = fastest
 		}
 	}
-	if len(out) == 0 {
-		return boxes // fallback: no INBOX/All Mail, use all folders
+	for _, b := range boxes {
+		if b == "INBOX" {
+			return []string{b} // non-Gmail fallback
+		}
 	}
-	return out
+	return boxes
 }
 
 // isTargetCancellationSubject 主旨是否為取消信（例：Sorry, we had to cancel order #...）

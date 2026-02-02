@@ -42,16 +42,17 @@ type AmazonOrderInfo struct {
 	OrderTotal    string // Order total (e.g. $121.58)
 	DeliversTo    string // Delivery address
 	ProductName   string // Product name
-	ProductImage  string // Product image URL (for UI, e.g. target.scene7.com/...)
+	ProductImage  string // Product image URL (for UI)
+	Qty           string // Quantity (e.g. "1")
 	ReceivedAt    int64  // Received time (Unix timestamp)
 }
 
 type AmazonOrderStatus struct {
 	OrderNumber    string // Order number
-	Status         string // "confirmed" | "canceled" | "ready to ship" | "arrived" | "unknown"
+	Status         string // "confirmed" | "canceled" | "Shipped" | "Delivered" | "unknown"
 	ReceivedAt     int64  // Received time (Unix timestamp) of the latest related email
 	Subject        string // Subject of the latest related email (optional)
-	TrackingNumber string // Tracking number (from ready to ship / arrived email, optional)
+	TrackingNumber string // Tracking number (from Shipped / Delivered email, optional)
 }
 
 type BestBuyOrderInfo struct {
@@ -59,7 +60,8 @@ type BestBuyOrderInfo struct {
 	OrderTotal    string // Order total (e.g. $121.58)
 	DeliversTo    string // Delivery address
 	ProductName   string // Product name
-	ProductImage  string // Product image URL (for UI, e.g. target.scene7.com/...)
+	ProductImage  string // Product image URL (for UI)
+	Qty           string // Quantity (e.g. "2")
 	ReceivedAt    int64  // Received time (Unix timestamp)
 }
 
@@ -76,15 +78,16 @@ type WalmartOrderInfo struct {
 	OrderTotal    string // Order total (e.g. $121.58)
 	DeliversTo    string // Delivery address
 	ProductName   string // Product name
-	ProductImage  string // Product image URL (for UI, e.g. target.scene7.com/...)
+	ProductImage  string // Product image URL (for UI)
+	Qty           string // Quantity (e.g. "5")
 	ReceivedAt    int64  // Received time (Unix timestamp)
 }
 
 type WalmartOrderStatus struct {
 	OrderNumber    string // Order number
-	Status         string // "confirmed" | "canceled" | "ready to ship" | "arrived" | "unknown"
+	Status         string // "confirmed" | "canceled" | "Shipped" | "Delivered" | "unknown"
 	ReceivedAt     int64  // Received time (Unix timestamp) of the latest related email
 	Subject        string // Subject of the latest related email (optional)
-	TrackingNumber string // Tracking number (from ready to ship / arrived email, optional)
+	TrackingNumber string // Tracking number (from Shipped email, optional)
 }
 
